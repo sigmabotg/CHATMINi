@@ -1,0 +1,54 @@
+settings = {
+    orientation = {
+        default = "portrait",
+        supported = { "portrait" }
+    },
+    
+    iphone = {
+        plist = {
+            CFBundleDisplayName = "CHATMINI",
+            CFBundleName = "CHATMINI",
+            CFBundleIdentifier = "com.fdlol.chatmini",
+            CFBundleVersion = "2.0.0",
+            CFBundleShortVersionString = "2.0",
+            CFBundleIconName = "AppIcon",
+            
+            -- Cho phép gọi API HTTP/HTTPS
+            NSAppTransportSecurity = {
+                NSAllowsArbitraryLoads = true,
+                NSExceptionDomains = {
+                    ["duckduckgo.com"] = {
+                        NSIncludesSubdomains = true,
+                        NSExceptionAllowsInsecureHTTPLoads = true
+                    },
+                    ["googleapis.com"] = {
+                        NSIncludesSubdomains = true,
+                        NSExceptionAllowsInsecureHTTPLoads = true
+                    }
+                }
+            },
+            
+            -- Style status bar
+            UIStatusBarStyle = "UIStatusBarStyleLightContent",
+            UIViewControllerBasedStatusBarAppearance = false,
+            
+            -- Yêu cầu thiết bị
+            UIRequiredDeviceCapabilities = {
+                "armv7"
+            },
+            
+            -- Hỗ trợ đa ngôn ngữ
+            CFBundleLocalizations = {
+                "en",
+                "vi"
+            }
+        }
+    },
+    
+    android = {
+        usesPermissions = {
+            "android.permission.INTERNET",
+            "android.permission.ACCESS_NETWORK_STATE"
+        }
+    }
+}
