@@ -1,0 +1,41 @@
+name: Build CHATMINI IPA
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Solar2D (Corona SDK)
+        run: |
+          curl -L https://solar2d.com/downloads/Solar2D-macOS-2024.3703.dmg -o solar2d.dmg
+          hdiutil attach solar2d.dmg
+          cp -R /Volumes/Solar2D/Solar2D.app /Applications/
+          hdiutil detach /Volumes/Solar2D
+
+      - name: Build IPA with Solar2D
+        run: |
+          /Applications/Solar2D.app/Contents/MacOS/CoronaSimulator -build iphone \
+            -target device \
+            -appName "CHATMINI" \
+            -bundleId "com.fdlol.chatmini" \
+            -codeSign 0 \
+            -provisioningProfile "" \
+            -out ./
+
+      - name: Compress IPA to ZIP
+        run: |
+          zip -r CHATMINI.zip CHATMINI.ipa
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: CHATMINI-App
+          path: CHATMINI.zip
